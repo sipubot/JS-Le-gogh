@@ -60,7 +60,6 @@ var Lego = (function (Lego, $, undefined) {
 		ctx.drawImage(canv, 0, 0, CANVAS.CANVAS_WIDTH * DATA.BLOCK_SIZE, CANVAS.CANVAS_HEIGHT * DATA.BLOCK_SIZE, 0, 0, CANVAS.CANVAS_WIDTH, CANVAS.CANVAS_HEIGHT);
 
 		PICTURE.TRAN_BINARY = ctx.getImageData(0, 0, CANVAS.CANVAS_WIDTH, CANVAS.CANVAS_HEIGHT);
-		console.log(PICTURE.TRAN_BINARY);
 		ctx.clearRect(0, 0, canv.width, canv.height);
 		ctx.putImageData(PICTURE.TRAN_BINARY,0,0);
 		ctx.globalCompositeOperation = "multiply";
