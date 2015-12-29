@@ -2,8 +2,8 @@ var Lego = (function (Lego, $, undefined) {
 	"use strict";
 	var CANVAS = {
 		CANVAS_DOC: "",
-		CANVAS_WIDTH: 300,
-		CANVAS_HEIGHT: 150
+		CANVAS_WIDTH: 0,
+		CANVAS_HEIGHT: 0
 	};
 	var PICTURE = {
 		LOAD_SRC: "",
@@ -27,18 +27,14 @@ var Lego = (function (Lego, $, undefined) {
 			PICTURE.LOAD_BINARY = image;
 			DATA.ORI_WIDTH = image.width;
 			DATA.ORI_HEIGHT = image.height;
+			CANVAS.CANVAS_WIDTH = image.width;
+			CANVAS.CANVAS_HEIGHT = image.height;
+
+			CANVAS.CANVAS_DOC.width = CANVAS.CANVAS_WIDTH;
+			CANVAS.CANVAS_DOC.height = CANVAS.CANVAS_HEIGHT;
 			fn.apply();
 		};
 		image.src = PICTURE.LOAD_SRC;
-	};
-
-	var savePic = function () {
-		PICTURE.TRAN_BINARY = CANVAS.CANVAS_DOC.toDataURL("image/png");
-		this.href = PICTURE.TRAN_BINARY;
-	};
-
-	var savePath = function () {
-		PICTURE.SAVE_SRC = "image.jpg";
 	};
 
 	var layerLego = function (ctx) {
@@ -64,7 +60,7 @@ var Lego = (function (Lego, $, undefined) {
 		ctx.drawImage(canv, 0, 0, CANVAS.CANVAS_WIDTH * DATA.BLOCK_SIZE, CANVAS.CANVAS_HEIGHT * DATA.BLOCK_SIZE, 0, 0, CANVAS.CANVAS_WIDTH, CANVAS.CANVAS_HEIGHT);
 
 		PICTURE.TRAN_BINARY = ctx.getImageData(0, 0, CANVAS.CANVAS_WIDTH, CANVAS.CANVAS_HEIGHT);
-
+		console.log(PICTURE.TRAN_BINARY);
 		ctx.clearRect(0, 0, canv.width, canv.height);
 		ctx.putImageData(PICTURE.TRAN_BINARY,0,0);
 		ctx.globalCompositeOperation = "multiply";
@@ -88,24 +84,37 @@ var Lego = (function (Lego, $, undefined) {
 	};
 
 	var meterwork = function (node) {
+		node.attr("min",25);
+		node.attr("max",50);
 		node.on("change", function () {
 			DATA.BLOCK_SIZE = this.value / 1000;
 			transforming();
 		});
 	};
 
-	Lego.run = function () {
-		PICTURE.LOAD_SRC = $("#load-image").attr("src");
-		CANVAS.CANVAS_DOC = document.getElementById('test');
+	var namechange = function (node,node2) {
+		node.on("change", function () {
+			PICTURE.SAVE_SRC = this.value;
+			node2.attr("download",PICTURE.SAVE_SRC+".jpg");
+		});
+	};
 
+	var savePic = function (node) {
+		node.click(function(){
+			PICTURE.TRAN_BINARY = CANVAS.CANVAS_DOC.toDataURL("image/png");
+			this.href = PICTURE.TRAN_BINARY;
+		});
+	};
+
+	Lego.run = function (imagesrc,canvasNodeId,rangeNodeId,nameNodeId,saveNodeId) {
+		PICTURE.LOAD_SRC = imagesrc;
+		CANVAS.CANVAS_DOC = document.getElementById(canvasNodeId);
 		loadPic(drawCanvas);
 		legoImgload();
-		meterwork($("#meter"));
-
-		$('#run').click(function () {
-			transforming();
-		});
+		meterwork($("#"+rangeNodeId));
+		namechange($("#"+nameNodeId),$("#"+saveNodeId));
+		savePic($("#"+saveNodeId));
 	};
 	return Lego;
 })(window.Lego || {}, jQuery);
-Lego.run();
+Lego.run($("#load-image").attr("src"),'test','meter','name','save');
