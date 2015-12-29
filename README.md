@@ -6,7 +6,10 @@ Picture transforming looks lego block!
 Use It
 
 Lego.run($("#load-image").attr("src"),  'test',   'meter',  'name', 'save');
+
+
         -----------------------------   -----     ------    ----     -----
-        imageSrc                        CanvasId  rangeId   nameInput Savehref
+
+        imageSrc,                        CanvasId,  rangeId,   nameInputId, SavehrefId
 
 More Detail see the code
