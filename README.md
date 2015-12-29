@@ -5,7 +5,7 @@ Picture transforming looks lego block!
 
 Use It
 
-Lego.run($("#load-image").attr("src"),  'test',   'meter',  'name', 'save');
+        Lego.run($("#load-image").attr("src"),  'test',   'meter',  'name', 'save');
 
 
         -----------------------------   -----     ------    ----     -----
