@@ -84,7 +84,7 @@ var Lego = (function (Lego, $, undefined) {
 
 	var meterwork = function (node) {
 		node.attr("min",25);
-		node.attr("max",50);
+		node.attr("max",60);
 		node.on("change", function () {
 			DATA.BLOCK_SIZE = this.value / 1000;
 			transforming();
